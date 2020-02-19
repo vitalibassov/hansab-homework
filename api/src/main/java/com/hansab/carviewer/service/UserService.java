@@ -6,6 +6,7 @@ import com.hansab.carviewer.exception.ResourceNotFoundException;
 import com.hansab.carviewer.repository.CarRepository;
 import com.hansab.carviewer.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +41,17 @@ public class UserService {
     public List<CarDTO> findCarsByUserId(Long id) {
         return carRepository.findAllByUserId(id).stream()
                 .map(car -> mapper.map(car, CarDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDTO> search(String find, String sort) {
+        String[] sortParams = sort.split(":");
+        Sort.Direction direction = Sort.Direction.valueOf(sortParams[1].toUpperCase());
+        String property = sortParams[0];
+
+        return userRepository.findAllByNameContainingIgnoreCase(find, Sort.by(direction, property))
+                .stream()
+                .map(user -> mapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
     }
 }

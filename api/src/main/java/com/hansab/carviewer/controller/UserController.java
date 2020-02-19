@@ -4,10 +4,7 @@ import com.hansab.carviewer.dto.CarDTO;
 import com.hansab.carviewer.dto.UserDTO;
 import com.hansab.carviewer.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,10 @@ public class UserController {
     @GetMapping("{id}/cars")
     public ResponseEntity<List<CarDTO>> findCarsByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findCarsByUserId(id));
+    }
+
+    @GetMapping(params = {"find", "sort"})
+    public ResponseEntity<List<UserDTO>> search(@RequestParam String find, @RequestParam String sort) {
+        return ResponseEntity.ok(userService.search(find, sort));
     }
 }

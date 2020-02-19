@@ -1,6 +1,5 @@
 package com.hansab.carviewer.service;
 
-import com.hansab.carviewer.model.Car;
 import com.hansab.carviewer.dto.CarDTO;
 import com.hansab.carviewer.exception.ResourceNotFoundException;
 import com.hansab.carviewer.repository.CarRepository;
