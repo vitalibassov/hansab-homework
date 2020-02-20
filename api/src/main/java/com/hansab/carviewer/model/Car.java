@@ -55,23 +55,4 @@ public class Car {
         this.numberplate = numberplate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Car)) return false;
-
-        Car car = (Car) o;
-
-        if (make != null ? !make.equals(car.make) : car.make != null) return false;
-        if (model != null ? !model.equals(car.model) : car.model != null) return false;
-        return numberplate != null ? numberplate.equals(car.numberplate) : car.numberplate == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = make != null ? make.hashCode() : 0;
-        result = 31 * result + (model != null ? model.hashCode() : 0);
-        result = 31 * result + (numberplate != null ? numberplate.hashCode() : 0);
-        return result;
-    }
 }

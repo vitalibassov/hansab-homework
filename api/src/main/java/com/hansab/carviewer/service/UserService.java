@@ -39,6 +39,8 @@ public class UserService {
     }
 
     public List<CarDTO> findCarsByUserId(Long id) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         return carRepository.findAllByUserId(id).stream()
                 .map(car -> mapper.map(car, CarDTO.class))
                 .collect(Collectors.toList());
@@ -46,7 +48,11 @@ public class UserService {
 
     public List<UserDTO> search(String find, String sort) {
         String[] sortParams = sort.split(":");
-        Sort.Direction direction = Sort.Direction.valueOf(sortParams[1].toUpperCase());
+        if (sortParams.length < 2) {
+            throw new IllegalArgumentException("Wrong sort param. Should be in \"fieldname:order\" format");
+        }
+
+        Sort.Direction direction = Sort.Direction.fromString(sortParams[1].toUpperCase());
         String property = sortParams[0];
 
         return userRepository.findAllByNameContainingIgnoreCase(find, Sort.by(direction, property))
