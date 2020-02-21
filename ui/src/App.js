@@ -1,39 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import logo from './assets/logo.png';
 import './App.css';
-import {findAllUsers, searchUser} from "./utils/requests";
-import UserCard from "./components/UserCard/UserCard";
-import Search from "./components/Search/Search";
+import {Switch, Route, useHistory} from 'react-router';
+import "swagger-ui-react/swagger-ui.css"
+import Users from "./pages/Users";
+import Docs from "./pages/Docs";
+import { Link } from 'react-router-dom';
+import Button from "@material-ui/core/Button";
 
 const App = () => {
-    const [users, setUsers] = useState();
 
-    const findUsers = (text, order) => searchUser(text, "name", order)
-        .then(response => {
-            setUsers(response.data)
-        });
-
-    useEffect(() => {
-            findAllUsers()
-                .then(response => {
-                    setUsers(response.data)
-                });
-        }, []);
+    const history = useHistory();
+    const goToDocs = () => history.push("/docs");
 
     return (
-        <div className="App">
+        <div>
             <header className="app-header">
-                <img src={logo} className="app-logo" alt="logo"/>
+                <Link to="/">
+                    <img src={logo} className="app-logo" alt="logo"/>
+                </Link>
+                <Button className="docs-button" variant="outlined" onClick={goToDocs}> DOCS </Button>
             </header>
 
-            <Search search={(text, order) => {
-                findUsers(text, order);
-            }}/>
-            <div className="user-cards">
-                {users && users.map(user => {
-                    return <UserCard key={user.name} user={user}/>
-                })}
-            </div>
+            <Switch>
+                <Route exact path="/">
+                    <Users/>
+                </Route>
+                <Route exact path="/docs">
+                    <Docs/>
+                </Route>
+            </Switch>
         </div>
     );
 };

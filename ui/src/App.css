@@ -1,23 +1,23 @@
-.App {
-  text-align: center;
-}
 
 .app-logo {
-  width: 300px;
-  pointer-events: none;
+    width: 300px;
+    pointer-events: none;
 }
 
 .app-header {
-  height: 75px;
-  display: flex;
-  padding-left: 16px;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0 4px 6px #cbcbcb;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+    box-shadow: 0 4px 6px #cbcbcb;
 }
-
 
 .user-cards {
     display: flex;
     flex-wrap: wrap;
+}
+
+.app-header .docs-button {
+    margin-right: 16px;
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TextField} from "@material-ui/core";
+import {TextField, Divider} from "@material-ui/core";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import {KeyboardArrowDown, KeyboardArrowUp} from '@material-ui/icons';
@@ -28,21 +28,26 @@ const Search = (props) => {
     const setOrderDirection = (event, value) => (value && setOrder(value));
 
     return (
-        <div className="search">
-            <TextField value={text} onChange={setSearchText}
-                       variant="outlined"
-                       placeholder="Type User name here..."/>
-            <ToggleButtonGroup onChange={setOrderDirection}
-                               exclusive
-                               value={order}>
-                <ToggleButton value={orderDirection.asc}>
-                    <KeyboardArrowUp/>
-                </ToggleButton>
-                <ToggleButton value={orderDirection.desc}>
-                    <KeyboardArrowDown/>
-                </ToggleButton>
-            </ToggleButtonGroup>
-        </div>)
+        <>
+            <div className="search">
+                <TextField value={text}
+                           onChange={setSearchText}
+                           variant="outlined"
+                           label="Search"
+                           placeholder="Type User name here..."/>
+                <ToggleButtonGroup onChange={setOrderDirection}
+                                   exclusive
+                                   value={order}>
+                    <ToggleButton value={orderDirection.asc}>
+                        <KeyboardArrowUp/>
+                    </ToggleButton>
+                    <ToggleButton value={orderDirection.desc}>
+                        <KeyboardArrowDown/>
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </div>
+            <Divider/>
+        </>)
 };
 
 export default Search;

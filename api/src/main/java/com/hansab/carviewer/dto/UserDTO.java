@@ -1,14 +1,12 @@
 package com.hansab.carviewer.dto;
 
-import com.hansab.carviewer.model.Car;
-
 import java.util.List;
 
 public class UserDTO {
 
     private Long id;
     private String name;
-    private List<Car> cars;
+    private List<CarDTO> cars;
 
     public Long getId() {
         return id;
@@ -26,11 +24,11 @@ public class UserDTO {
         this.name = name;
     }
 
-    public List<Car> getCars() {
+    public List<CarDTO> getCars() {
         return cars;
     }
 
-    public void setCars(List<Car> cars) {
+    public void setCars(List<CarDTO> cars) {
         this.cars = cars;
     }
 }
