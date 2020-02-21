@@ -3,17 +3,23 @@ package com.hansab.carviewer.service;
 import com.hansab.carviewer.dto.CarDTO;
 import com.hansab.carviewer.dto.UserDTO;
 import com.hansab.carviewer.exception.ResourceNotFoundException;
+import com.hansab.carviewer.exception.WrongSortSyntaxException;
 import com.hansab.carviewer.repository.CarRepository;
 import com.hansab.carviewer.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
+    private static final Logger LOG = LoggerFactory.getLogger(CarService.class);
 
     private final UserRepository userRepository;
     private final CarRepository carRepository;
@@ -28,7 +34,10 @@ public class UserService {
     public UserDTO findById(Long id) {
         return userRepository.findById(id)
                 .map(user -> mapper.map(user, UserDTO.class))
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+                .orElseThrow(() -> {
+                    LOG.warn("User with id={} not found", id);
+                    return new ResourceNotFoundException("User", "id", id);
+                });
     }
 
     public List<UserDTO> findAll() {
@@ -40,7 +49,10 @@ public class UserService {
 
     public List<CarDTO> findCarsByUserId(Long id) {
         userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+                .orElseThrow(() -> {
+                    LOG.warn("User with id={} not found", id);
+                    return new ResourceNotFoundException("User", "id", id);
+                });
         return carRepository.findAllByUserId(id).stream()
                 .map(car -> mapper.map(car, CarDTO.class))
                 .collect(Collectors.toList());
@@ -49,7 +61,8 @@ public class UserService {
     public List<UserDTO> search(String find, String sort) {
         String[] sortParams = sort.split(":");
         if (sortParams.length < 2) {
-            throw new IllegalArgumentException("Wrong sort param. Should be in \"fieldname:order\" format");
+            LOG.warn("Wrong sort param. Should be in \"fieldname:order\" format. sort={}", sort);
+            throw new WrongSortSyntaxException("Wrong sort param. Should be in \"fieldname:order\" format", sort);
         }
 
         Sort.Direction direction = Sort.Direction.fromString(sortParams[1].toUpperCase());
