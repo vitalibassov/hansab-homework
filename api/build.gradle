@@ -18,7 +18,7 @@ dependencies {
 	implementation 'org.liquibase:liquibase-core'
 	implementation 'org.springdoc:springdoc-openapi-core:1.1.49'
 
-	compile 'org.modelmapper:modelmapper:2.3.6'
+	implementation 'org.modelmapper:modelmapper:2.3.6'
 
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
