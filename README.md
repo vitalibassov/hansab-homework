@@ -1,6 +1,7 @@
 Option 1 (Docker):
   1. Make sure docker machine and docker-compose are installed on your machine.
   2. run "docker-compose up" from the project root directory.
+  
 Option 2 (Manual)
   1. Make sure NodeJS is installed.
   2. Make sure JAVA_HOME environment variable set properly.
