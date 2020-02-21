@@ -1,35 +1,41 @@
-import React from 'react';
-import {Card, CardContent, CardHeader, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
+import React, {useState} from 'react';
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    IconButton,
+    Dialog, DialogTitle, DialogContent, DialogActions
+} from "@material-ui/core";
+import {Visibility} from "@material-ui/icons";
 import './UserCard.css';
-
-const renderTableBody = (cars) => <TableBody>
-    {cars && cars.map(car => (
-        <TableRow key={car.numberplate}>
-            <TableCell>{car.make}</TableCell>
-            <TableCell>{car.model}</TableCell>
-            <TableCell>{car.numberplate}</TableCell>
-        </TableRow>
-    ))}
-</TableBody>;
+import Button from "@material-ui/core/Button";
+import CarsTable from "./CarsTable/CarsTable";
 
 const UserCard = (props) => {
     const {name, cars} = props.user;
+    const [openDetails, setOpenDetails] = useState(false);
+
+    const openDetailsDialog = () => setOpenDetails(true);
+    const closeDetailsDialog = () => setOpenDetails(false);
 
     return (
         <Card className="user-card">
-            <CardHeader title={name}/>
+            <CardHeader title={name} subheader={`${cars.length} cars`} action={
+                <IconButton onClick={openDetailsDialog}>
+                    <Visibility/>
+                </IconButton>}/>
             <CardContent>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Make</TableCell>
-                            <TableCell>Model</TableCell>
-                            <TableCell>Number Plate</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    {renderTableBody(cars)}
-                </Table>
+                <CarsTable cars={cars}/>
             </CardContent>
+            <Dialog open={openDetails} onClose={closeDetailsDialog} maxWidth="sm" fullWidth>
+                <DialogTitle>{name}</DialogTitle>
+                <DialogContent dividers >
+                    <CarsTable cars={cars}/>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeDetailsDialog}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </Card>
     );
 };

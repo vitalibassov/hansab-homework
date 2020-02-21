@@ -24,12 +24,15 @@ const Search = (props) => {
         }
     }, [order, text]);
 
+    const setSearchText = (e) => setText(e.target.value);
+    const setOrderDirection = (event, value) => (value && setOrder(value));
+
     return (
         <div className="search">
-            <TextField value={text} onChange={e => setText(e.target.value)}
+            <TextField value={text} onChange={setSearchText}
                        variant="outlined"
                        placeholder="Type User name here..."/>
-            <ToggleButtonGroup onChange={(event, value) => (value && setOrder(value))}
+            <ToggleButtonGroup onChange={setOrderDirection}
                                exclusive
                                value={order}>
                 <ToggleButton value={orderDirection.asc}>
