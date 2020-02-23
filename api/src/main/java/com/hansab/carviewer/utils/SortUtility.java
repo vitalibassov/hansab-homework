@@ -5,7 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 
-public class SortUtility {
+public final class SortUtility {
+
+    private SortUtility() {}
+
     private static final Logger LOG = LoggerFactory.getLogger(SortUtility.class);
     private static final int SORT_PARAMS_LENGTH = 2;
 
