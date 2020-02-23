@@ -58,4 +58,22 @@ public class CarControllerIntTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void shouldSearch() throws Exception {
+        mvc.perform(get("/cars?find=skoda&sort=make:asc")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].make").value("Skoda"));
+
+        mvc.perform(get("/cars?find=oct&sort=make:asc")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].model").value("Octavia"));
+
+        mvc.perform(get("/cars?find=asd&sort=make:asc")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].numberplate").value("123ASD"));
+    }
 }

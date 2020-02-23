@@ -64,7 +64,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findCarsByUserId(id));
     }
 
-    @Operation(summary = "Search for a User", description = "Returns a User by search parameters")
+    @Operation(summary = "Search for Users", description = "Returns Users by search parameters")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "400", description = "Wrong sort syntax", content = @Content)

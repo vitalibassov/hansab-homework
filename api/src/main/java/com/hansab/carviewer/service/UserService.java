@@ -6,6 +6,7 @@ import com.hansab.carviewer.exception.ResourceNotFoundException;
 import com.hansab.carviewer.exception.WrongSortSyntaxException;
 import com.hansab.carviewer.repository.CarRepository;
 import com.hansab.carviewer.repository.UserRepository;
+import com.hansab.carviewer.utils.SortUtility;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +60,7 @@ public class UserService {
     }
 
     public List<UserDTO> search(String find, String sort) {
-        String[] sortParams = sort.split(":");
-        if (sortParams.length < 2) {
-            LOG.warn("Wrong sort param. Should be in \"fieldname:order\" format. sort={}", sort);
-            throw new WrongSortSyntaxException("Wrong sort param. Should be in \"fieldname:order\" format", sort);
-        }
-
-        Sort.Direction direction = Sort.Direction.fromString(sortParams[1].toUpperCase());
-        String property = sortParams[0];
-
-        return userRepository.findAllByNameContainingIgnoreCase(find, Sort.by(direction, property))
+        return userRepository.findAllByNameContainingIgnoreCase(find, SortUtility.generateSort(sort))
                 .stream()
                 .map(user -> mapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());

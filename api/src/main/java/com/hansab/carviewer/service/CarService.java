@@ -3,6 +3,7 @@ package com.hansab.carviewer.service;
 import com.hansab.carviewer.dto.CarDTO;
 import com.hansab.carviewer.exception.ResourceNotFoundException;
 import com.hansab.carviewer.repository.CarRepository;
+import com.hansab.carviewer.utils.SortUtility;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,13 @@ public class CarService {
         return carRepository.findAll()
                 .stream()
                 .map(car -> mapper.map(car, CarDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<CarDTO> search(String find, String sort) {
+        return carRepository.findAllByMakeOrModelOrNumberplate(find.toLowerCase(), SortUtility.generateSort(sort))
+                .stream()
+                .map(user -> mapper.map(user, CarDTO.class))
                 .collect(Collectors.toList());
     }
 }

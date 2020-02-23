@@ -50,4 +50,19 @@ public class CarController {
         LOG.info("Request to get a car by id={}", id);
         return ResponseEntity.ok(carService.findById(id));
     }
+
+    @Operation(summary = "Search for Cars", description = "Returns Cars by search criterias")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Wrong sort syntax", content = @Content)
+    })
+    @GetMapping(params = {"find", "sort"})
+    public ResponseEntity<List<CarDTO>> search(
+            @Parameter(description = "Search text", required = true)
+            @RequestParam String find,
+            @Parameter(description = "Sort string in field:order format", required = true, example = "name:asc")
+            @RequestParam String sort) {
+        LOG.info("Request to search cars: find={}, sort={}", find, sort);
+        return ResponseEntity.ok(carService.search(find, sort));
+    }
 }
